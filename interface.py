@@ -1,17 +1,22 @@
 import streamlit as st
-from chain import agent_executor
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-fireworks_api_key = os.environ['FIREWORKS_API_KEY']
-nomic_api_key = os.environ['NOMIC_API_KEY']
-
+from chain import recipe_agent_executor
+from grocery_ai import grocery_agent_executor
 
 st.title('Chef Lazio')
-user_prompt = st.text_input('Enter a comma-seperated list of ingredients')
 
-if st.button("Generate") and user_prompt:
-    with st.spinner("Generating...."):
-        output = agent_executor.invoke({"input": user_prompt})
-        st.write(output)
+option = st.radio("Select Functionality:", ("Recipe Generator", "Grocery Assistant"))
+
+if option == "Recipe Generator":
+    user_prompt = st.text_input('Enter a comma-seperated list of ingredients')
+
+    if st.button("Generate Recipe") and user_prompt:
+        with st.spinner("Generating recipe...."):
+            output = recipe_agent_executor.invoke({"input": user_prompt})
+            st.write(output)
+else:
+    user_prompt = st.text_input('Enter the name of the recipe you need groceries for')
+
+    if st.button("Generate Groceries") and user_prompt:
+        with st.spinner("Generating groceries...."):
+            output = grocery_agent_executor.invoke({"input": user_prompt})
+            st.write(output)

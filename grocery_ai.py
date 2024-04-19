@@ -6,7 +6,7 @@ from langchain.agents.format_scratchpad import format_log_to_str
 from langchain.agents.output_parsers import ReActJsonSingleInputOutputParser
 from langchain.callbacks.manager import CallbackManagerForRetrieverRun
 from langchain.tools.render import render_text_description
-from langchain.tools.retriever import create_retriever_tool 
+from langchain.tools.retriever import create_retriever_tool
 from langchain_community.chat_models.fireworks import ChatFireworks
 from langchain_community.utilities.arxiv import ArxivAPIWrapper
 from langchain_core.documents import Document
@@ -16,31 +16,46 @@ from langchain.prompts import PromptTemplate
 from langchain.prompts import HumanMessagePromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate
 from langchain_core.prompts.chat import ChatPromptTemplate
+from langchain_community.chat_models.fireworks import ChatFireworks
+from langchain.agents import AgentType
 
 from langchain_community.vectorstores import Chroma
-from langchain_nomic.embeddings import NomicEmbeddings
-from utils import llm, nomic_api_key
+from dotenv import load_dotenv
+import os
 
+from langchain_community.tools import DuckDuckGoSearchRun
+from langchain.agents import initialize_agent, Tool
 
-embeddings = NomicEmbeddings(model="nomic-embed-text-v1.5")
-db = Chroma(embedding_function=embeddings, persist_directory="./chroma_db")
-db_retriever = db.as_retriever()
+load_dotenv()
 
-db_tool_description = (
-    "A tool that looks up recipes, it's ingredients, and directions and how to make the food."
-    "Use this tool to look up ingredients and directions for making food recipes."
+#openai_api_key = os.environ['OPENAI_API_KEY']
+fireworks_api_key = os.environ['FIREWORKS_API_KEY']
+MODEL_ID = "accounts/fireworks/models/mixtral-8x7b-instruct"
+
+duck_search = DuckDuckGoSearchRun()
+
+tools = [
+    Tool(
+        name="Intermediate Answer",
+        func=duck_search.run,
+        description="useful for when you need to ask with search. Provide only the ingredients"
+    )
+]
+
+llm = ChatFireworks(
+    model=MODEL_ID,
+    model_kwargs={
+        "temperature": 0,
+        "max_tokens": 2048,
+        "top_p": 1,
+    },
 )
-
-db_tool = create_retriever_tool(db_retriever, "docstore", db_tool_description)
-
-tools = [db_tool]
-
 
 system_prompt = SystemMessagePromptTemplate(
     prompt=PromptTemplate(
-        input_variables=['tool_names', 'tools'],
+        input_variables=['tools'],
         template='''
-        You are a helpful cooking assistant that recommends food recipes based on ingredients provides. 
+        You are a helpful cooking assistant that searches for just the ingredients of a particular meal. 
         
         You have access to the following tools:
         {tools}
@@ -60,7 +75,7 @@ system_prompt = SystemMessagePromptTemplate(
 
         ALWAYS use the following format:
         Question: the input question you must answer
-        Thought: ALways think about the user query in this way. Given an ingredient or a list of ingredients follow the following steps: look at all the provided ingredients, go through {tools} and put the names of all recipes that have the provided ingredients in a list, finally randomly select a recipe from the list for the user. You will provide the user with all the ingredients for the recipe, the equipments to be used, and the directions/method to prepare it.
+        Thought: ALways think about the user query in this way. Given a meal provide only the ingredients needed to prepare the meal.
         Action:
         ```
         $JSON_BLOB
@@ -69,14 +84,11 @@ system_prompt = SystemMessagePromptTemplate(
         ... (this Thought/Action/Observation can repeat N times)
         Thought: I now know the final answer
         Final Answer: The final answer should follow this format:
-        Name of the Recipe as the header
+        Name of the meal as the header
         "Ingredients" as the first sub-header. List the ingredients as the content of the sub-header
-        "Equipments to use" as the second sub-header. List the equipments to prepare the recipe as the content of the second sub-header
-        "Directions" as the third sub-header. Write down the steps to prepare the recipe as the content of the third sub-header
         '''
     )
 )
-
 
 human_prompt = HumanMessagePromptTemplate(
     prompt=PromptTemplate(
@@ -94,7 +106,6 @@ prompt = chat_prompt.partial(
     tool_names=", ".join([t.name for t in tools]),
 )
 
-# define the agent
 model_with_stop = llm.bind(stop=["\nObservation"])
 agent = (
     {
@@ -106,15 +117,13 @@ agent = (
     | ReActJsonSingleInputOutputParser()
 )
 
-
 class InputType(BaseModel):
     input: str
 
-
-# instantiate AgentExecutor
-recipe_agent_executor = AgentExecutor(
+grocery_agent_executor = AgentExecutor(
     agent=agent,
     tools=tools,
     verbose=True,
     handle_parsing_errors=True,
 ).with_types(input_type=InputType)
+
