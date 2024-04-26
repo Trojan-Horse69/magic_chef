@@ -45,6 +45,11 @@ search_tool = Tool(
         Provide the ingredients to make the recipe, the equipments needed and the directions to make the recipe
         """)
 
+# I just added the search functionality, sometimes it produces an error but most times it doesn't
+# I haven't looked into it properly because of limited fireworks credits
+# But the error is usually solved by just retrying the query or reformatting the query, like, "I need a recipe for (list the ingredients)"
+# Or you can just remove the functionality
+
 tools = [db_tool, search_tool]
 
 
@@ -81,11 +86,10 @@ system_prompt = SystemMessagePromptTemplate(
         ... (this Thought/Action/Observation can repeat N times)
         Thought: I now know the final answer
         Final Answer: The final answer should follow this format:
-        Short preamble
         Name of the Recipe as the header
-        "INGREDIENTS" as the first sub-header. List the ingredients as the content of the sub-header
-        "EQUIPMENTS to use" as the second sub-header. List the equipments to prepare the recipe as the content of the second sub-header
-        "DIRECTIONS" as the third sub-header. Write down the steps to prepare the recipe as the content of the third sub-header
+        INGREDIENTS as the first sub-header. List the ingredients as the content of the sub-header
+        EQUIPMENTS TO USE as the second sub-header. List the equipments to prepare the recipe as the content of the second sub-header
+        DIRECTIONS as the third sub-header. Write down the steps to prepare the recipe as the content of the third sub-header
         '''
     )
 )

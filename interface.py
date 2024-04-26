@@ -1,5 +1,5 @@
 import streamlit as st
-from chain import recipe_agent_executor
+from recipe_ai import recipe_agent_executor
 from grocery_ai import grocery_agent_executor
 
 def main():

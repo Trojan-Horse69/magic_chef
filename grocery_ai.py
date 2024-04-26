@@ -70,9 +70,9 @@ system_prompt = SystemMessagePromptTemplate(
         ... (this Thought/Action/Observation can repeat N times)
         Thought: I now know the final answer
         Final Answer: The final answer should follow this format:
-        A short preamble
-        "INGREDIENTS" as the first sub-header. List the ingredients as the content of the sub-header
-        "DIRECTIONS" as the second sub-header. Provide the directions for making the recipe as the content of the second sub-header
+        Name of the Recipe as the header
+        INGREDIENTS as the first sub-header. List the ingredients as the content of the sub-header
+        DIRECTIONS as the second sub-header. Provide the directions for making the recipe as the content of the second sub-header
         '''
     )
 )
