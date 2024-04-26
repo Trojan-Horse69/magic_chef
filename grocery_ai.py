@@ -18,44 +18,30 @@ from langchain.prompts import SystemMessagePromptTemplate
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_community.chat_models.fireworks import ChatFireworks
 from langchain.agents import AgentType
-
+from utils import llm
 from langchain_community.vectorstores import Chroma
-from dotenv import load_dotenv
-import os
-
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain.agents import initialize_agent, Tool
-
-load_dotenv()
-
-#openai_api_key = os.environ['OPENAI_API_KEY']
-fireworks_api_key = os.environ['FIREWORKS_API_KEY']
-MODEL_ID = "accounts/fireworks/models/mixtral-8x7b-instruct"
 
 duck_search = DuckDuckGoSearchRun()
 
 tools = [
     Tool(
-        name="Intermediate Answer",
+        name="grocery search",
         func=duck_search.run,
-        description="useful for when you need to ask with search. Provide only the ingredients"
+        description="""
+        Use it to search for the camp food recipe the user asks for in the input.
+        Provide the ingredients to make the recipe, and the directions to make the recipe
+        """
     )
 ]
 
-llm = ChatFireworks(
-    model=MODEL_ID,
-    model_kwargs={
-        "temperature": 0,
-        "max_tokens": 2048,
-        "top_p": 1,
-    },
-)
 
 system_prompt = SystemMessagePromptTemplate(
     prompt=PromptTemplate(
-        input_variables=['tools'],
+        input_variables=['tool_names', 'tools'],
         template='''
-        You are a helpful cooking assistant that searches for just the ingredients of a particular meal. 
+        You are a helpful cooking assistant that searches for the a particular camp food recipe, and provides the ingredients and directions for the recipe. 
         
         You have access to the following tools:
         {tools}
@@ -84,8 +70,9 @@ system_prompt = SystemMessagePromptTemplate(
         ... (this Thought/Action/Observation can repeat N times)
         Thought: I now know the final answer
         Final Answer: The final answer should follow this format:
-        Name of the meal as the header
-        "Ingredients" as the first sub-header. List the ingredients as the content of the sub-header
+        A short preamble
+        "INGREDIENTS" as the first sub-header. List the ingredients as the content of the sub-header
+        "DIRECTIONS" as the second sub-header. Provide the directions for making the recipe as the content of the second sub-header
         '''
     )
 )
