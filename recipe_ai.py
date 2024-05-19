@@ -1,31 +1,22 @@
 from typing import List
-
-from langchain import hub
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import format_log_to_str
 from langchain.agents.output_parsers import ReActJsonSingleInputOutputParser
-from langchain.callbacks.manager import CallbackManagerForRetrieverRun
 from langchain.tools.render import render_text_description
 from langchain.tools.retriever import create_retriever_tool 
-from langchain_community.chat_models.fireworks import ChatFireworks
-from langchain_community.utilities.arxiv import ArxivAPIWrapper
-from langchain_core.documents import Document
 from langchain_core.pydantic_v1 import BaseModel
-from langchain_core.retrievers import BaseRetriever
 from langchain.prompts import PromptTemplate
 from langchain.prompts import HumanMessagePromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate
 from langchain_core.prompts.chat import ChatPromptTemplate
-from langchain_community.tools import DuckDuckGoSearchRun
-from langchain.agents import initialize_agent, Tool
 from langchain_community.vectorstores import Chroma
 from langchain_nomic.embeddings import NomicEmbeddings
 from utils import llm
+from pydantic import BaseModel
 
-duck_search = DuckDuckGoSearchRun()
 
 embeddings = NomicEmbeddings(model="nomic-embed-text-v1.5")
-db = Chroma(embedding_function=embeddings, persist_directory="./chroma_db")
+db = Chroma(embedding_function=embeddings, persist_directory="./recipes_chroma_db")
 db_retriever = db.as_retriever()
 
 
@@ -36,21 +27,7 @@ db_tool_description = (
 
 db_tool = create_retriever_tool(db_retriever, "docstore", db_tool_description)
 
-search_tool = Tool(
-        name="plan b",
-        func=duck_search.run,
-        description="""
-        useful for when you can't find a food recipe for the user from {db_retriever}.
-        Search for a camp food recipe that contains at least all the ingredients in the user's input. 
-        Provide the ingredients to make the recipe, the equipments needed and the directions to make the recipe
-        """)
-
-# I just added the search functionality, sometimes it produces an error but most times it doesn't
-# I haven't looked into it properly because of limited fireworks credits
-# But the error is usually solved by just retrying the query or reformatting the query, like, "I need a recipe for (list the ingredients)"
-# Or you can just remove the functionality
-
-tools = [db_tool, search_tool]
+tools = [db_tool]
 
 
 system_prompt = SystemMessagePromptTemplate(

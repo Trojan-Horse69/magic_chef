@@ -5,7 +5,7 @@ from grocery_ai import grocery_agent_executor
 def main():
     st.title('Chef Lazio')
 
-    option = st.radio("Select Functionality:", ("Recipe Generator", "Grocery Assistant"))
+    option = st.radio("What Would You Like to use? :", ("Recipe Generator", "Grocery Assistant"))
 
     if option == "Recipe Generator":
         user_prompt = st.text_input('Enter a comma-seperated list of ingredients')
