@@ -1,6 +1,6 @@
 # Magic Chef
 
-This AI chatbot has two functionalities.
+This simple AI chatbot has two functionalities.
 
 ![magic_chef1](https://github.com/Trojan-Horse69/magic_chef/assets/134110603/06894061-e868-4443-816c-0175b623f984)
 
