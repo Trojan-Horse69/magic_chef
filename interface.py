@@ -16,6 +16,7 @@ def main():
                 text_content = output.get("output", "")
                 recipe = text_content.replace("**", "")
                 st.write(recipe)
+                
     else:
         user_prompt = st.text_input('Enter the name of the recipe you need groceries for')
 
