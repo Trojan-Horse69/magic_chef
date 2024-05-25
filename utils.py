@@ -19,5 +19,3 @@ llm = ChatFireworks(
     },
     cache=True,
 )
-
-nomic_api_key = os.environ['NOMIC_API_KEY']
