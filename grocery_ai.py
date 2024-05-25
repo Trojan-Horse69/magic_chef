@@ -1,27 +1,16 @@
 from typing import List
-
-from langchain import hub
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import format_log_to_str
 from langchain.agents.output_parsers import ReActJsonSingleInputOutputParser
-from langchain.callbacks.manager import CallbackManagerForRetrieverRun
 from langchain.tools.render import render_text_description
-from langchain.tools.retriever import create_retriever_tool
-from langchain_community.chat_models.fireworks import ChatFireworks
-from langchain_community.utilities.arxiv import ArxivAPIWrapper
-from langchain_core.documents import Document
 from langchain_core.pydantic_v1 import BaseModel
-from langchain_core.retrievers import BaseRetriever
 from langchain.prompts import PromptTemplate
 from langchain.prompts import HumanMessagePromptTemplate
 from langchain.prompts import SystemMessagePromptTemplate
 from langchain_core.prompts.chat import ChatPromptTemplate
-from langchain_community.chat_models.fireworks import ChatFireworks
-from langchain.agents import AgentType
 from utils import llm
-from langchain_community.vectorstores import Chroma
 from langchain_community.tools import DuckDuckGoSearchRun
-from langchain.agents import initialize_agent, Tool
+from langchain.agents import Tool
 
 duck_search = DuckDuckGoSearchRun()
 
@@ -70,9 +59,9 @@ system_prompt = SystemMessagePromptTemplate(
         ... (this Thought/Action/Observation can repeat N times)
         Thought: I now know the final answer
         Final Answer: The final answer should follow this format:
-        A short preamble
-        "INGREDIENTS" as the first sub-header. List the ingredients as the content of the sub-header
-        "DIRECTIONS" as the second sub-header. Provide the directions for making the recipe as the content of the second sub-header
+        Name of the Recipe as the header
+        INGREDIENTS as the first sub-header. List the ingredients as the content of the sub-header
+        DIRECTIONS as the second sub-header. Provide the directions for making the recipe as the content of the second sub-header
         '''
     )
 )
