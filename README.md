@@ -10,14 +10,17 @@ With recipe generator, users input a list of ingredients and the chatbot generat
 This tool helps users make the most of what they have on hand.
 The chatbot provides all the ingredients and equipment needed to prepare the recipe, along with detailed directions to make it.
 
-![recipe_generator](https://github.com/Trojan-Horse69/magic_chef/assets/134110603/6d10b631-5ed5-4a47-8880-7fbb357e836f)
+![magic_chef1](https://github.com/etimbukafia/magic_chef/assets/134110603/02c13654-68b7-495c-9437-d900090df955)
+
 
 # Grocery Assistant
 
 The grocery assistant takes in the name of a African cuisine recipe as input and generates a list of all the ingredients needed to prepare the recipe. 
 As a bonus, it also provides detailed directions on how to make the recipe.
 
-![grocery_assistant](https://github.com/Trojan-Horse69/magic_chef/assets/134110603/7d975a64-dc75-44bd-b2d0-062e4402e7f7)
+![grocery_assistant](https://github.com/etimbukafia/magic_chef/assets/134110603/be3bade0-feca-43ae-922f-0fd370b06225)
+
+![grocery_assistant2](https://github.com/etimbukafia/magic_chef/assets/134110603/5642bbb3-c336-479f-887a-7ddc8cc21e91)
 
 Streamlit is used for the chatbot interface
 
