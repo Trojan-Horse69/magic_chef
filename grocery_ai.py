@@ -18,7 +18,7 @@ tools = [
         name="grocery search",
         func=duck_search.run,
         description="""
-        Use it to search for the camp food recipe the user asks for in the input.
+        Use it to search for the African cuisine recipe the user asks for in the input.
         Provide the ingredients to make the recipe, and the directions to make the recipe
         """
     )
@@ -29,7 +29,7 @@ system_prompt = SystemMessagePromptTemplate(
     prompt=PromptTemplate(
         input_variables=['tool_names', 'tools'],
         template='''
-        You are a helpful cooking assistant that searches for the a particular camp food recipe, and provides the ingredients and directions for the recipe. 
+        You are a helpful cooking assistant that searches for the a particular African cuisine recipe, and provides the ingredients and directions for the recipe. 
         
         You have access to the following tools:
         {tools}
