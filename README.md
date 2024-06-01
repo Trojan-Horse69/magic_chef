@@ -20,9 +20,11 @@ The chatbot provides all the ingredients and equipment needed to prepare the rec
 The grocery assistant takes in the name of an African cuisine recipe as input and generates a list of all the ingredients needed to prepare the recipe. 
 As a bonus, it also provides detailed directions on how to make the recipe.
 
-![grocery_assistant](https://github.com/etimbukafia/magic_chef/assets/134110603/be3bade0-feca-43ae-922f-0fd370b06225)
+![grocery_assistant](https://github.com/etimbukafia/magic_chef/assets/134110603/bf4208aa-1286-4a4d-a04a-72a9abe2d324)
 
-![grocery_assistant2](https://github.com/etimbukafia/magic_chef/assets/134110603/5642bbb3-c336-479f-887a-7ddc8cc21e91)
+
+![grocery_assistant2](https://github.com/etimbukafia/magic_chef/assets/134110603/8948dc2a-6b6f-4fb5-82b5-2fcd081a562b)
+
 
 Streamlit is used for the chatbot interface
 
