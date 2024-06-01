@@ -2,7 +2,8 @@
 
 This simple AI chatbot has two functionalities.
 
-![magic_chef1](https://github.com/Trojan-Horse69/magic_chef/assets/134110603/06894061-e868-4443-816c-0175b623f984)
+![magic_chef1](https://github.com/etimbukafia/magic_chef/assets/134110603/22ce188f-8117-4432-b43f-6c45baee4d0c)
+
 
 # Recipe Generator
 
@@ -10,7 +11,8 @@ With recipe generator, users input a list of ingredients and the chatbot generat
 This tool helps users make the most of what they have on hand.
 The chatbot provides all the ingredients and equipment needed to prepare the recipe, along with detailed directions to make it.
 
-![magic_chef1](https://github.com/etimbukafia/magic_chef/assets/134110603/02c13654-68b7-495c-9437-d900090df955)
+![magic_chef2](https://github.com/etimbukafia/magic_chef/assets/134110603/c0f9cc83-2dd4-4a26-b8c2-b694f5ea2805)
+
 
 
 # Grocery Assistant
